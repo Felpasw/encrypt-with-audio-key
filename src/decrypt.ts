@@ -1,14 +1,5 @@
 import * as fs from 'fs';
-import crypto from 'crypto';
 import { AES, enc } from 'crypto-ts';
-
-function sumBuffers(buffer1: Buffer, buffer2: Buffer): Buffer {
-  const concatenatedBuffer = Buffer.concat([
-    Uint8Array.from(buffer1),
-    Uint8Array.from(buffer2),
-  ]);
-  return Buffer.from(concatenatedBuffer);
-}
 
 function xorBuffers(buffer1: Buffer, buffer2: Buffer): Buffer {
   const resultBuffer = Buffer.alloc(buffer1.length);
@@ -40,9 +31,9 @@ function decryptWithAudioKey(
   const originalText = decryptedMessage.slice(audioBinary.length);
 
   const decryptedText = xorBuffers(randomBits, originalText).toString('utf-8');
+  fs.writeFileSync('decrypted.txt', decryptedText);
 
   console.log('Texto descriptografado:', decryptedText);
-  fs.writeFileSync(decryptedText, 'decrypted.txt');
 }
 
 const audioFile = 'C:/Users/felip/Desktop/TrabSexta/build/audio.mp3';
