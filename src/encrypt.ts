@@ -51,4 +51,4 @@ function encryptWithAudioKey(text: string, audioFilePath: string): string {
 
 const plaintext = 'Hello World!';
 const audioFile = 'C:/Users/felip/Desktop/TrabSexta/build/BIG CRACK.mp3';
-fs.writeFileSync(encryptWithAudioKey(plaintext, audioFile), 'encrypted.bin');
+fs.writeFileSync(encryptWithAudioKey(plaintext, audioFile), 'encrypted.txt');
