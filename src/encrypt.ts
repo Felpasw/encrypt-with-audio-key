@@ -18,7 +18,7 @@ function xorBuffers(buffer1: Buffer, buffer2: Buffer): Buffer {
   return resultBuffer;
 }
 
-function encryptWithAudioKey(text: string, audioFilePath: string): string {
+function encryptWithAudioKey(text: string, audioFilePath: string): void {
   const audioBinary = fs.readFileSync(audioFilePath);
   const textBinary = Buffer.from(text, 'utf8');
 
@@ -43,12 +43,11 @@ function encryptWithAudioKey(text: string, audioFilePath: string): string {
       key
     ).toString();
 
-    return encryptedMessage;
-  } else {
-    return '';
+    fs.writeFileSync('encrypted.txt', encryptedMessage);
   }
 }
 
 const plaintext = 'Hello World!';
-const audioFile = 'C:/Users/felip/Desktop/TrabSexta/build/BIG CRACK.mp3';
-fs.writeFileSync(encryptWithAudioKey(plaintext, audioFile), 'encrypted.txt');
+const audioFile = 'C:/Users/felip/Desktop/TrabSexta/build/audio.mp3';
+
+encryptWithAudioKey(plaintext, audioFile);

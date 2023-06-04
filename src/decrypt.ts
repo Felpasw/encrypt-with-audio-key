@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import crypto from 'crypto';
-import { AES } from 'crypto-ts';
+import { AES, enc } from 'crypto-ts';
 
 function sumBuffers(buffer1: Buffer, buffer2: Buffer): Buffer {
   const concatenatedBuffer = Buffer.concat([
@@ -18,38 +18,34 @@ function xorBuffers(buffer1: Buffer, buffer2: Buffer): Buffer {
   return resultBuffer;
 }
 
-function encryptWithAudioKey(text: string, audioFilePath: string): string {
+function decryptWithAudioKey(
+  audioFilePath: string,
+  encryptedFilePath: string
+): void {
   const audioBinary = fs.readFileSync(audioFilePath);
-  const textBinary = Buffer.from(text, 'utf8');
+  const encryptedMessage = fs.readFileSync(encryptedFilePath).toString('utf-8');
 
-  if (audioBinary.length > textBinary.length) {
-    const randomBits = crypto.randomBytes(
-      audioBinary.length - textBinary.length
-    );
-    fs.writeFileSync('key.bin', randomBits);
+  const key = fs.readFileSync('C:/Users/felip/Desktop/TrabSexta/key.bin');
+  const keyWordArray = enc.Hex.parse(key.toString('hex'));
 
-    console.log('Tamanho dos random bits:' + randomBits.length);
+  const decryptedMessage = xorBuffers(
+    audioBinary,
+    Buffer.from(AES.decrypt(encryptedMessage, keyWordArray).toString())
+  );
 
-    const textBinaryUpdate = sumBuffers(randomBits, textBinary);
+  const randomBits = decryptedMessage.slice(
+    0,
+    audioBinary.length - decryptedMessage.length
+  );
+  const originalText = decryptedMessage.slice(audioBinary.length);
 
-    console.log('Tamanho do texto depois da soma: ' + textBinaryUpdate.length);
+  const decryptedText = xorBuffers(randomBits, originalText).toString('utf-8');
 
-    const key = fs
-      .readFileSync('C:/Users/felip/Desktop/TrabSexta/key.bin')
-      .toString('utf-8');
-
-    const encryptedMessage = AES.encrypt(
-      xorBuffers(audioBinary, textBinaryUpdate).toString('utf-8'),
-      key
-    ).toString();
-
-    return encryptedMessage;
-  } else {
-    return '';
-  }
+  console.log('Texto descriptografado:', decryptedText);
+  fs.writeFileSync(decryptedText, 'decrypted.txt');
 }
 
-const plaintext = 'Hello World!';
-const audioFile = 'C:/Users/felip/Desktop/TrabSexta/build/BIG CRACK.mp3';
-const encryptedText = encryptWithAudioKey(plaintext, audioFile);
-fs.writeFileSync('encrypted.bin', encryptedText);
+const audioFile = 'C:/Users/felip/Desktop/TrabSexta/build/audio.mp3';
+const encryptedFile = 'encrypted.txt';
+
+decryptWithAudioKey(audioFile, encryptedFile);
