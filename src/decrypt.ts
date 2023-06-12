@@ -16,27 +16,19 @@ function decryptWithAudioKey(
   const audioBinary = fs.readFileSync(audioFilePath);
   const encryptedMessage = fs.readFileSync(encryptedFilePath).toString('utf-8');
 
-  const key = fs.readFileSync('C:/Users/felip/Desktop/TrabSexta/key.bin');
+  const key = fs.readFileSync('C:/Users/felip/Desktop/TrabSextaOFC/key.bin');
   const keyWordArray = enc.Hex.parse(key.toString('hex'));
 
   const decryptedMessage = xorBuffers(
     audioBinary,
     Buffer.from(AES.decrypt(encryptedMessage, keyWordArray).toString())
   );
+  console.log(`Tamanho decryptedMessage: ${decryptedMessage.length}`);
 
-  const randomBits = decryptedMessage.slice(
-    0,
-    audioBinary.length - decryptedMessage.length
-  );
-  const originalText = decryptedMessage.slice(audioBinary.length);
-
-  const decryptedText = xorBuffers(randomBits, originalText).toString('utf-8');
-  fs.writeFileSync('decrypted.txt', decryptedText);
-
-  console.log('Texto descriptografado:', decryptedText);
+  fs.writeFileSync('decrypted.txt', decryptedMessage);
 }
 
-const audioFile = 'C:/Users/felip/Desktop/TrabSexta/build/audio.mp3';
+const audioFile = 'C:/Users/felip/Desktop/TrabSextaOFC/build/audio.mp3';
 const encryptedFile = 'encrypted.txt';
 
 decryptWithAudioKey(audioFile, encryptedFile);

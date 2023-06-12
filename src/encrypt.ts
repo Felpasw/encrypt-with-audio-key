@@ -35,19 +35,20 @@ function encryptWithAudioKey(text: string, audioFilePath: string): void {
     console.log('Tamanho do texto depois da soma: ' + textBinaryUpdate.length);
 
     const key = fs
-      .readFileSync('C:/Users/felip/Desktop/TrabSexta/key.bin')
+      .readFileSync('C:/Users/felip/Desktop/TrabSextaOFC/key.bin')
       .toString('utf-8');
 
     const encryptedMessage = AES.encrypt(
       xorBuffers(audioBinary, textBinaryUpdate).toString('utf-8'),
       key
     ).toString();
-
     fs.writeFileSync('encrypted.txt', encryptedMessage);
   }
 }
 
-const plaintext = 'Hello World!';
-const audioFile = 'C:/Users/felip/Desktop/TrabSexta/build/audio.mp3';
+const plaintext = fs
+  .readFileSync('C:/Users/felip/Desktop/TrabSextaOFC/build/openText.txt')
+  .toString();
+const audioFile = 'C:/Users/felip/Desktop/TrabSextaOFC/build/audio.mp3';
 
 encryptWithAudioKey(plaintext, audioFile);
