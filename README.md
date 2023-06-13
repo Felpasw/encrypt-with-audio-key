@@ -7,6 +7,8 @@ Esse código foi feito para a disciplina Criptografia e Segurança de Sistemas C
 - <a href="https://nodejs.org/en"> Node.js </a>
 ## Importante ⚠️ 
 O path para leitura dos arquivos devem estar adaptados para o sua máquina para que o `fs` consiga ler corretamente, verifique bem antes todos os path's antes de executar o código. Verifique também o arquivo para criptografia, ele deve ter o tamanho de 44.516 bytes.
+## Explicação do algoritmo
+Você pode encontrar a explcação do algoritmo em um relatório aqui.
 ## Instalação 📥
 
 Faça um clone desse repositório e acesse o diretório.
